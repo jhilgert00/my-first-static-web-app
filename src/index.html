@@ -144,6 +144,10 @@
   
   $(document).ready(function() {
 
+    $('input#sugg-1').val("---");
+    $('input#sugg-2').val("---");
+    $('input#sugg-3').val("---");
+
     function round4(x)
     {
     return Math.ceil(x/4)*4;
@@ -161,6 +165,25 @@
     ideal_3 = (hp_3 + (ads_3 * 3));
 
     $('#calculate').on('click', function() {
+
+      /*
+      s1 = $('input#shelf-1').val()
+      s2 = $('input#shelf-2').val()
+      s1 = $('input#shelf-3').val()
+      c1 = $('input#cooler-1').val()
+      c2 = $('input#cooler-2').val()
+      c3 = $('input#cooler-3').val()
+      //lt1 = $('lead-time').val()
+
+      if (s1 || s2 || s3 || c1 || c2 || c3 == "") {
+        alert("Please enter a valid inventory number into each entry.");
+      }
+      */
+      
+      //if ($('input#shelf-1').val() == "NaN") {
+        //alert("Please enter a valid number into each entry.")
+      //}
+
       //lead time applies to all products
       lt = $('input#lead-input').val();
 
@@ -194,10 +217,10 @@
         $('input#sugg-2').css('color', 'red');
       }
 
-      if (suggest_2 > 0) {
-        $('input#sugg-2').css('color', 'green');
+      if (suggest_3 > 0) {
+        $('input#sugg-3').css('color', 'green');
       } else {
-        $('input#sugg-2').css('color', 'red');
+        $('input#sugg-3').css('color', 'red');
       }
 
     });
