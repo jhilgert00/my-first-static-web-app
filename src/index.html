@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="custom.css">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="jquery-3.6.0.min.js"></script>
   <title>Hiland Milk Order Estimator</title>
 </head>
 
@@ -21,7 +22,7 @@
     <div id="container">
     <div id="disclaimer">PLEASE NOTE: This is only a 'proof of concept' based on a handful of products and the *HP and **ADS from Store 151, and could theoretically be plugged into real-time data.</div>
     <div id="legend">*HP = Holding Power, or how many units the shelf can hold. (store specific)<br />**ADS = Average Daily Sales, based on the 13 week average. (store specific)</div>
-    <div class="text-center">This web form estimates a Hiland Milk Order based on 13 week average sales / 7 to get the ADS (Average Daily Sales) from the past 13 weeks. Then calculates how many sales are likely to happen between time of submission to arrival of milk order based on the "Lead Time." (which can be a decimal, ex: 1.5 days) Then it suggestes the order amount, rounded UP to a factor of the case pack in order to have a full shelf and 3 days worth of product in the cooler, <b><i>AFTER</i></b> the shelf is filled. Optional feature to add additional cases in increments of the case pack if on ad, low on product, etc...</div>
+    <div class="text-center">This web form estimates a Hiland Milk Order based on 13 week average sales / 7 to get the ADS (Average Daily Sales) from the past 13 weeks. Then calculates how many sales are likely to happen between time of submission to arrival of milk order based on the "Lead Time." (which can be a decimal, ex: 1.5 days) Then it suggestes the order amount, rounded UP to a factor of the case pack in order to have a full shelf and 3 days worth of product in the cooler, <b><i>AFTER</i></b> the shelf is filled. Optional feature to add/subtract cases from 'Suggested' in increments of the case pack if on ad, low on product, gut feeling, special circumstances, etc...</div>
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -48,10 +49,24 @@
           <td class="pack">4</td>
           <td class="hp">32</td>
           <td class="ads">24</td>
-          <td class="shelf"></td>
-          <td class="cooler"></td>
-          <td class="suggested">---</td>
-          <td class="add"></td>
+          <td class="shelf">
+            <div class="imput-wrapper">
+              <input type="text" size="3" id="shelf-1" />
+            </div>
+          </td>
+          <td class="cooler">
+            <div class="imput-wrapper">
+              <input id="cooler-1" type="text" size="3"  />
+            </div>
+          </td>
+          <td class="suggested">
+            <div class="imput-wrapper">
+            <input type="text" size="3" id="sugg-1" />
+            </div>
+          </td>
+          <td class="add">
+            <button id="add1">+</button><button id="subtract1">-</button>
+          </td>
         </tr>
         <tr>
           <td class="product_name" scope="row">Homeland 2%</th>
@@ -60,60 +75,136 @@
           <td class="pack">4</td>
           <td class="hp">32</td>
           <td class="ads">14</td>
-          <td class="shelf"></td>
-          <td class="cooler"></td>
-          <td class="suggested">---</td>
-          <td class="add"></td>
+          <td class="shelf">
+            <div class="imput-wrapper">
+              <input type="text" size="3" id="shelf-2" />
+            </div>
+          </td>
+          <td class="cooler">
+            <div class="imput-wrapper">
+              <input type="text" size="3" id="cooler-2" />
+            </div>
+          </td>
+          <td class="suggested">
+            <div class="imput-wrapper">
+              <input type="text" size="3" id="sugg-2" />
+            </div>
+          </td>
+          <td class="add">
+            <button id="add2">+</button><button id="subtract2">-</button>
+          </td>
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th scope="col" colspan="10" id="product-section">MILK - 1/2 GALLONS</th>
-        </tr>
-        <tr>
-          <th scope="col" class="section-header">Product</th>
-          <th scope="col">UPC</th>
-          <th scope="col">Size</th>
-          <th class="pack-heading" scope="col">Pack</th>
-          <th class="hp-heading" scope="col">*HP</th>
-          <th class="ads-heading" scope="col">**ADS</th>
-          <th class="shelf-heading" scope="col">Shelf</th>
-          <th class="cooler-heading" scope="col">Cooler</th>
-          <th class="sugg-heading" scope="col">Suggested</th>
-          <th class="add-heading" scope="col"> + / - </th>
-        </tr>
-      </thead>
+    <table id="lead-time">
       <tbody>
         <tr>
-          <td class="product_name" scope="row">Homeland Whole</th>
-          <td class="upc">02030</td>
-          <td class="size">1/2 GAL</td>
-          <td class="pack">9</td>
-          <td class="hp">25</td>
-          <td class="ads">25</td>
-          <td class="shelf"></td>
-          <td class="cooler"></td>
-          <td class="suggested">---</td>
-          <td class="add"></td>
+          <td id="spacer1"></td>
+          <td id="lt">Lead Time (Days):</td>
+          <td id="lt-input"><input type="text" size="2" id="lead-input" /></td>
         </tr>
         <tr>
-          <td class="product_name" scope="row">Homeland 2%</th>
-          <td class="upc">02032</td>
-          <td class="size">1/2 GAL</td>
-          <td class="pack">9</td>
-          <td class="hp">25</td>
-          <td class="ads">11</td>
-          <td class="shelf"></td>
-          <td class="cooler"></td>
-          <td class="suggested">---</td>
-          <td class="add"></td>
+          <td id="spacer2"></td>
+          <td id="calc-button" colspan="2">
+            <button id="calculate">Calculate Order</button>
+          </td>
         </tr>
       </tbody>
     </table>
     <div id="footer"></div>
     </div>
 </body>
+<script>
+  
+  $(document).ready(function() {
+
+    function round4(x)
+    {
+    return Math.ceil(x/4)*4;
+    }
+
+    gal_pack = 4;
+    hp_1 = 32;
+    hp_2 = 32;
+    ads_1 = 24;
+    ads_2 = 14;
+    ideal_1 = (hp_1 + (ads_1 * 3));
+    ideal_2 = (hp_2 + (ads_2 * 3));
+
+    $('#calculate').on('click', function() {
+      //lead time applies to all products
+      lt = $('input#lead-input').val();
+
+      shelf_1 = $('input#shelf-1').val();
+      cooler_1 = $('input#cooler-1').val();
+      qoh_1 = (parseInt(shelf_1) + parseInt(cooler_1)) - (ads_1 * lt);
+      suggest_1 = round4(ideal_1 - qoh_1);
+      $('input#sugg-1').val(suggest_1);
+
+      shelf_2 = $('input#shelf-2').val();
+      cooler_2 = $('input#cooler-2').val();
+      qoh_2 = (parseInt(shelf_2) + parseInt(cooler_2)) - (ads_2 * lt);
+      suggest_2 = round4(ideal_2 - qoh_2);
+      $('input#sugg-2').val(suggest_2);
+
+      if (suggest_1 <= 1) {
+        $('input#sugg-1').css('color', 'red');
+      } else {
+        $('input#sugg-1').css('color', 'green');
+      }
+
+      if (suggest_2 <= 1) {
+        $('input#sugg-2').css('color', 'red');
+      } else {
+        $('input#sugg-2').css('color', 'green');
+      }
+
+      //alert(suggest_1)
+    });
+
+    $('#add1').on("click", function(){
+      x = parseInt($('input#sugg-1').val());
+      //alert(x)
+      if (x <= 1) {
+        $('input#sugg-1').css('color', 'red');
+      } else {
+        $('input#sugg-1').css('color', 'green');
+      }
+      $('input#sugg-1').val(x + gal_pack);
+    });
+
+    $('#subtract1').on("click", function(){
+      x = parseInt($('input#sugg-1').val());
+      if (x <= 1) {
+        $('input#sugg-1').css('color', 'red');
+      } else {
+        $('input#sugg-1').css('color', 'green');
+      }
+      $('input#sugg-1').val(x - gal_pack);
+    });
+
+    $('#add2').on("click", function(){
+      x = parseInt($('input#sugg-2').val());
+      if (x <= 1) {
+        $('input#sugg-2').css('color', 'red');
+      } else {
+        $('input#sugg-2').css('color', 'green');
+      }
+      $('input#sugg-2').val(x + gal_pack);
+    });
+
+    $('#subtract2').on("click", function(){
+      x = parseInt($('input#sugg-2').val());
+      if (x <= 1) {
+        $('input#sugg-2').css('color', 'red');
+      } else {
+        $('input#sugg-2').css('color', 'green');
+      }
+      $('input#sugg-2').val(x - gal_pack);
+    });
+
+  });
+  
+</script>
 
 </html>
