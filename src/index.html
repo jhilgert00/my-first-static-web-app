@@ -65,7 +65,7 @@
             </div>
           </td>
           <td class="add">
-            <button id="add1">+</button><button id="subtract1">-</button>
+            <button id="subtract1">-</button><button id="add1">+</button>
           </td>
         </tr>
         <tr>
@@ -91,7 +91,33 @@
             </div>
           </td>
           <td class="add">
-            <button id="add2">+</button><button id="subtract2">-</button>
+            <button id="subtract2">-</button><button id="add2">+</button>
+          </td>
+        </tr>
+        <tr>
+          <td class="product_name" scope="row">Hiland Whole</th>
+          <td class="upc">00117</td>
+          <td class="size">GAL</td>
+          <td class="pack">4</td>
+          <td class="hp">20</td>
+          <td class="ads">8</td>
+          <td class="shelf">
+            <div class="imput-wrapper">
+              <input type="text" size="3" id="shelf-3" />
+            </div>
+          </td>
+          <td class="cooler">
+            <div class="imput-wrapper">
+              <input type="text" size="3" id="cooler-3" />
+            </div>
+          </td>
+          <td class="suggested">
+            <div class="imput-wrapper">
+              <input type="text" size="3" id="sugg-3" />
+            </div>
+          </td>
+          <td class="add">
+            <button id="subtract3">-</button><button id="add3">+</button>
           </td>
         </tr>
       </tbody>
@@ -126,10 +152,13 @@
     gal_pack = 4;
     hp_1 = 32;
     hp_2 = 32;
+    hp_3 = 20;
     ads_1 = 24;
     ads_2 = 14;
+    ads_3 = 8;
     ideal_1 = (hp_1 + (ads_1 * 3));
     ideal_2 = (hp_2 + (ads_2 * 3));
+    ideal_3 = (hp_3 + (ads_3 * 3));
 
     $('#calculate').on('click', function() {
       //lead time applies to all products
@@ -147,60 +176,91 @@
       suggest_2 = round4(ideal_2 - qoh_2);
       $('input#sugg-2').val(suggest_2);
 
-      if (suggest_1 <= 1) {
-        $('input#sugg-1').css('color', 'red');
-      } else {
+      shelf_3 = $('input#shelf-3').val();
+      cooler_3 = $('input#cooler-3').val();
+      qoh_3 = (parseInt(shelf_3) + parseInt(cooler_3)) - (ads_3 * lt);
+      suggest_3 = round4(ideal_3 - qoh_3);
+      $('input#sugg-3').val(suggest_3);
+
+      if (suggest_1 > 0) {
         $('input#sugg-1').css('color', 'green');
-      }
-
-      if (suggest_2 <= 1) {
-        $('input#sugg-2').css('color', 'red');
       } else {
-        $('input#sugg-2').css('color', 'green');
+        $('input#sugg-1').css('color', 'red');
       }
 
-      //alert(suggest_1)
+      if (suggest_2 > 0) {
+        $('input#sugg-2').css('color', 'green');
+      } else {
+        $('input#sugg-2').css('color', 'red');
+      }
+
+      if (suggest_2 > 0) {
+        $('input#sugg-2').css('color', 'green');
+      } else {
+        $('input#sugg-2').css('color', 'red');
+      }
+
     });
 
     $('#add1').on("click", function(){
       x = parseInt($('input#sugg-1').val());
       //alert(x)
-      if (x <= 1) {
-        $('input#sugg-1').css('color', 'red');
-      } else {
+      if (x > 0) {
         $('input#sugg-1').css('color', 'green');
+      } else {
+        $('input#sugg-1').css('color', 'red');
       }
       $('input#sugg-1').val(x + gal_pack);
     });
 
     $('#subtract1').on("click", function(){
       x = parseInt($('input#sugg-1').val());
-      if (x <= 1) {
-        $('input#sugg-1').css('color', 'red');
-      } else {
+      if (x > 0) {
         $('input#sugg-1').css('color', 'green');
+      } else {
+        $('input#sugg-1').css('color', 'red');
       }
       $('input#sugg-1').val(x - gal_pack);
     });
 
     $('#add2').on("click", function(){
       x = parseInt($('input#sugg-2').val());
-      if (x <= 1) {
-        $('input#sugg-2').css('color', 'red');
-      } else {
+      if (x > 0) {
         $('input#sugg-2').css('color', 'green');
+      } else {
+        $('input#sugg-2').css('color', 'red');
       }
       $('input#sugg-2').val(x + gal_pack);
     });
 
     $('#subtract2').on("click", function(){
       x = parseInt($('input#sugg-2').val());
-      if (x <= 1) {
-        $('input#sugg-2').css('color', 'red');
-      } else {
+      if (x > 0) {
         $('input#sugg-2').css('color', 'green');
+      } else {
+        $('input#sugg-2').css('color', 'red');
       }
       $('input#sugg-2').val(x - gal_pack);
+    });
+
+    $('#add3').on("click", function(){
+      x = parseInt($('input#sugg-3').val());
+      if (x > 0) {
+        $('input#sugg-3').css('color', 'green');
+      } else {
+        $('input#sugg-3').css('color', 'red');
+      }
+      $('input#sugg-3').val(x + gal_pack);
+    });
+
+    $('#subtract3').on("click", function(){
+      x = parseInt($('input#sugg-3').val());
+      if (x > 0) {
+        $('input#sugg-3').css('color', 'green');
+      } else {
+        $('input#sugg-3').css('color', 'red');
+      }
+      $('input#sugg-3').val(x - gal_pack);
     });
 
   });
